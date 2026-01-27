@@ -1,13 +1,751 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>myapp</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WoodMart - Gỗ Tự Nhiên, Chất Lượng Bền Vững</title>
+    
+    <!-- Google Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- === PHẦN CSS === -->
+    <style>
+        /* --- General & Reset --- */
+        :root {
+            --primary-color: #6d4c41; /* Brown */
+            --secondary-color: #f5f5f5; /* Light Beige */
+            --accent-color: #556b2f; /* Dark Olive Green */
+            --text-color: #333;
+            --white-color: #fff;
+            --hero-overlay-color: rgba(0, 0, 0, 0.5);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; /* Offset for sticky header */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--white-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+        
+        section:nth-of-type(even) {
+            background-color: var(--secondary-color);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        h2.section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        h2.section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* --- Header --- */
+        .main-header {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Lora', serif;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .main-nav ul {
+            margin: 0; padding: 0; list-style: none; display: flex;
+        }
+        .main-nav li { margin-left: 30px; }
+        .main-nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 700;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+        .main-nav a:hover, .main-nav a.active { color: var(--accent-color); }
+        .main-nav a:hover::after, .main-nav a.active::after { width: 100%; }
+
+        /* --- 1. HERO SECTION --- */
+        #hero {
+            background: linear-gradient(var(--hero-overlay-color), var(--hero-overlay-color)), url('https://images.unsplash.com/photo-1506794261324-974d72a29672?auto=format&fit=crop&q=80&w=1770') no-repeat center center/cover;
+            height: 100vh;
+            color: var(--white-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0;
+        }
+        .hero-content {
+            max-width: 800px;
+        }
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: var(--white-color);
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+        .cta-button {
+            background-color: var(--accent-color);
+            color: var(--white-color);
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .cta-button:hover {
+            background-color: #445525;
+            transform: translateY(-3px);
+        }
+
+        /* --- 2. ABOUT SECTION --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .about-text h3 {
+            font-size: 2rem;
+            margin-top: 0;
+        }
+
+        /* --- 3. PRODUCTS SECTION --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        .product-card {
+            background: var(--white-color);
+            border: 1px solid #eee;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .product-card img { width: 100%; height: 200px; object-fit: cover; }
+        .product-card-content { padding: 25px; }
+        .product-card h3 { margin-top: 0; font-size: 1.6rem; color: var(--primary-color); }
+        .product-card .price { display: block; font-size: 1.1rem; color: var(--accent-color); font-weight: bold; margin: 10px 0; }
+        .contact-btn { display: inline-block; background-color: var(--primary-color); color: #fff; padding: 10px 25px; text-decoration: none; border-radius: 50px; margin-top: 15px; font-weight: bold; transition: background-color 0.3s ease; }
+        .contact-btn:hover { background-color: #4a342a; }
+
+        /* --- 4. WHY US SECTION --- */
+        .why-us-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        .why-us-item {
+            padding: 30px;
+        }
+        .why-us-item .icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        .why-us-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        /* --- 5. DIRECT CONSULTATION --- */
+        #consultation-form-section {
+            background-color: var(--secondary-color);
+        }
+        .consultation-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        #form-message {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+
+        /* --- 6. CONTACT SECTION --- */
+        .contact-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .contact-content p {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .contact-info ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 40px;
+        }
+        .contact-info li {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- 7. FOOTER --- */
+        .main-footer {
+            background: var(--primary-color);
+            color: var(--white-color);
+            text-align: center;
+            padding: 30px 0;
+        }
+        .main-footer p {
+            margin: 0;
+        }
+
+        /* --- 8. CHATBOT --- */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s, background-color 0.3s;
+            z-index: 1001;
+        }
+        #chat-toggle-button:hover {
+            transform: scale(1.1);
+            background-color: #445525;
+        }
+
+        #chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            max-width: 90vw;
+            height: 500px;
+            background: var(--white-color);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+            transform-origin: bottom right;
+            transform: scale(0);
+            opacity: 0;
+            z-index: 1000;
+        }
+
+        #chat-window.open {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .chat-header {
+            background: var(--primary-color);
+            color: var(--white-color);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Lora', serif;
+        }
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--white-color);
+        }
+        #chat-close-btn {
+            background: none;
+            border: none;
+            color: var(--white-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .chat-body {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-message {
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .chat-message.user {
+            background-color: var(--accent-color);
+            color: var(--white-color);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        .chat-message.bot {
+            background-color: #e9e9eb;
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-footer {
+            padding: 10px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        #chat-input {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 1rem;
+        }
+        #chat-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        #chat-send-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #chat-send-btn:hover {
+            background: #4a342a;
+        }
+        
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h2.section-title { font-size: 2.2rem; }
+            .main-header .container { flex-direction: column; }
+            .main-nav ul { margin-top: 15px; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .about-grid { grid-template-columns: 1fr; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- =======================
+         HEADER & NAVIGATION
+    ======================== -->
+    <header class="main-header">
+        <div class="container">
+            <a href="#hero" class="logo">WoodMart</a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#hero" class="active">Trang chủ</a></li>
+                    <li><a href="#about">Giới thiệu</a></li>
+                    <li><a href="#products">Sản phẩm</a></li>
+                    <li><a href="#consultation-form-section">Tư vấn</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- =======================
+             1. HERO SECTION
+        ======================== -->
+        <section id="hero">
+            <div class="hero-content">
+                <h1>Gỗ Tự Nhiên – Chất Lượng Bền Vững</h1>
+                <p>Chúng tôi cung cấp các sản phẩm gỗ tự nhiên cao cấp, được tuyển chọn kỹ lưỡng, mang lại vẻ đẹp và sự bền bỉ cho mọi công trình.</p>
+                <a href="#products" class="cta-button">Xem sản phẩm</a>
+            </div>
+        </section>
+
+        <!-- =======================
+             2. ABOUT SECTION
+        ======================== -->
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title">Về WoodMart</h2>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h3>Hơn 15 năm kinh nghiệm trong ngành gỗ</h3>
+                        <p>WoodMart tự hào là nhà cung cấp gỗ uy tín hàng đầu, với kinh nghiệm dày dặn trong việc lựa chọn và xử lý gỗ tự nhiên. Chúng tôi cam kết mọi sản phẩm đều có nguồn gốc rõ ràng, hợp pháp và được chế tác bởi những người thợ lành nghề nhất.</p>
+                        <p>Sứ mệnh của chúng tôi là mang đến những giải pháp về gỗ tốt nhất, đáp ứng mọi nhu cầu của khách hàng từ nội thất gia đình đến các dự án kiến trúc lớn.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1562156829-4aa83c501174?auto=format&fit=crop&q=80&w=1770" alt="Xưởng gỗ WoodMart">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =======================
+             3. PRODUCTS SECTION
+        ======================== -->
+        <section id="products">
+            <div class="container">
+                <h2 class="section-title">Sản phẩm của chúng tôi</h2>
+                <div class="product-grid">
+                    <!-- Product Cards -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1593298713028-d2d469a5a5f9?auto=format&fit=crop&q=80&w=800" alt="Gỗ Thông">
+                        <div class="product-card-content">
+                            <h3>Gỗ Thông</h3>
+                            <p>Nhẹ, mềm, có vân gỗ đẹp tự nhiên, thường dùng làm nội thất giá rẻ.</p>
+                            <span class="price">Giá từ: 2tr/m³</span>
+                            <a href="#contact" class="contact-btn">Liên hệ</a>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1621383525154-9b16019a3fed?auto=format&fit=crop&q=80&w=800" alt="Gỗ Sồi">
+                        <div class="product-card-content">
+                            <h3>Gỗ Sồi</h3>
+                            <p>Cứng, nặng, chịu lực tốt, vân gỗ đẹp, phù hợp với phong cách hiện đại.</p>
+                            <span class="price">Giá từ: 8tr/m³</span>
+                            <a href="#contact" class="contact-btn">Liên hệ</a>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1616047006789-b7af5215c826?auto=format&fit=crop&q=80&w=800" alt="Gỗ Óc Chó">
+                        <div class="product-card-content">
+                            <h3>Gỗ Óc Chó</h3>
+                            <p>Màu nâu socola đặc trưng, vân gỗ cuộn sóng, là loại gỗ cao cấp, sang trọng.</p>
+                            <span class="price">Giá từ: 25tr/m³</span>
+                            <a href="#contact" class="contact-btn">Liên hệ</a>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                         <img src="https://images.unsplash.com/photo-1542241647-9cbbada2b309?auto=format&fit=crop&q=80&w=800" alt="Gỗ Lim">
+                        <div class="product-card-content">
+                            <h3>Gỗ Lim</h3>
+                            <p>Rất cứng, nặng và bền. Có màu nâu sẫm, không bị mối mọt, chịu được thời tiết.</p>
+                            <span class="price">Giá từ: 15tr/m³</span>
+                            <a href="#contact" class="contact-btn">Liên hệ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =======================
+             4. WHY US SECTION
+        ======================== -->
+        <section id="why-us">
+            <div class="container">
+                <h2 class="section-title">Tại sao chọn WoodMart</h2>
+                <div class="why-us-grid">
+                    <div class="why-us-item">
+                        <div class="icon">🌳</div>
+                        <h3>Gỗ Tự Nhiên 100%</h3>
+                        <p>Cam kết nguồn gốc gỗ rõ ràng, chất lượng được kiểm định nghiêm ngặt.</p>
+                    </div>
+                    <div class="why-us-item">
+                        <div class="icon">💲</div>
+                        <h3>Giá Minh Bạch</h3>
+                        <p>Báo giá chi tiết, cạnh tranh, không phát sinh chi phí bất ngờ.</p>
+                    </div>
+                    <div class="why-us-item">
+                        <div class="icon">🚚</div>
+                        <h3>Giao Hàng Nhanh</h3>
+                        <p>Hệ thống vận chuyển chuyên nghiệp, đảm bảo tiến độ cho công trình của bạn.</p>
+                    </div>
+                    <div class="why-us-item">
+                        <div class="icon">💬</div>
+                        <h3>Tư Vấn Tận Tâm</h3>
+                        <p>Đội ngũ chuyên gia sẵn sàng hỗ trợ bạn chọn loại gỗ phù hợp nhất.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================
+             5. DIRECT CONSULTATION
+        =========================== -->
+        <section id="consultation-form-section">
+            <div class="container">
+                <h2 class="section-title">Yêu Cầu Tư Vấn Trực Tiếp</h2>
+                <form id="consultation-form" class="consultation-form">
+                    <div class="form-group">
+                        <label for="name">Họ và Tên</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số Điện Thoại</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Nội dung cần tư vấn</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">Gửi Yêu Cầu</button>
+                    <div id="form-message"></div>
+                </form>
+            </div>
+        </section>
+
+
+        <!-- =======================
+             6. CONTACT SECTION
+        ======================== -->
+        <section id="contact">
+            <div class="container contact-content">
+                <h2 class="section-title">Liên hệ với chúng tôi</h2>
+                <p>Bạn đã sẵn sàng để bắt đầu dự án của mình? Hãy để lại thông tin hoặc gọi ngay cho chúng tôi để nhận được tư vấn và báo giá tốt nhất.</p>
+                <div class="contact-info">
+                    <ul>
+                        <li><strong>Điện thoại:</strong> 0987.654.321</li>
+                        <li><strong>Email:</strong> support@woodmart.com</li>
+                        <li><strong>Địa chỉ:</strong> 123 Đường Tự Nhiên, Quận Gỗ, TP. Hồ Chí Minh</li>
+                    </ul>
+                </div>
+                <button class="cta-button" id="contact-chat-button">Trò chuyện với chuyên gia</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- =======================
+         7. FOOTER
+    ======================== -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 WoodMart. All Rights Reserved.</p>
+            <p>Thiết kế bởi một chuyên gia AI</p>
+        </div>
+    </footer>
+
+    <!-- =======================
+         8. CHATBOT
+    ======================== -->
+    <div id="chat-toggle-button">💬</div>
+
+    <div id="chat-window">
+        <div class="chat-header">
+            <h3>WoodMart Hỗ Trợ</h3>
+            <button id="chat-close-btn">&times;</button>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="chat-message bot">Chào bạn! Tôi có thể giúp gì cho bạn? (hỏi về 'giá', 'loại gỗ', 'liên hệ')</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Nhập câu hỏi...">
+            <button id="chat-send-btn">➢</button>
+        </div>
+    </div>
+
+
+    <!-- =======================
+         JAVASCRIPT
+    ======================== -->
+    <script type="module" src="/firebase.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- CHATBOT UI LOGIC ---
+            const chatToggleButton = document.getElementById('chat-toggle-button');
+            const contactChatButton = document.getElementById('contact-chat-button');
+            const chatWindow = document.getElementById('chat-window');
+            const closeChatBtn = document.getElementById('chat-close-btn');
+            const chatBody = document.getElementById('chat-body');
+            const chatInput = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send-btn');
+
+            const toggleChatWindow = () => chatWindow.classList.toggle('open');
+
+            chatToggleButton.addEventListener('click', toggleChatWindow);
+            contactChatButton.addEventListener('click', toggleChatWindow);
+            closeChatBtn.addEventListener('click', toggleChatWindow);
+
+            // --- CHATBOT CORE LOGIC ---
+            const handleSendMessage = () => {
+                const userInput = chatInput.value.trim();
+                if (userInput === "") return;
+
+                // 1. Add user message to chat body
+                appendMessage(userInput, 'user');
+                chatInput.value = '';
+
+                // 2. Get and add bot response
+                setTimeout(() => {
+                    const botResponse = getBotResponse(userInput);
+                    appendMessage(botResponse, 'bot');
+                }, 500); // Simulate bot thinking
+            };
+
+            const appendMessage = (text, type) => {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('chat-message', type);
+                messageDiv.textContent = text;
+                chatBody.appendChild(messageDiv);
+                // Scroll to the latest message
+                chatBody.scrollTop = chatBody.scrollHeight;
+            };
+
+            const getBotResponse = (userInput) => {
+                const lowerCaseInput = userInput.toLowerCase();
+                
+                if (lowerCaseInput.includes("giá")) {
+                    return `Bảng giá tham khảo tại WoodMart:
+- Gỗ Thông: từ 2.000.000 VNĐ/m³
+- Gỗ Sồi: từ 8.000.000 VNĐ/m³
+- Gỗ Lim: từ 15.000.000 VNĐ/m³
+- Gỗ Óc Chó: từ 25.000.000 VNĐ/m³
+Lưu ý: Đây là giá tham khảo.`;
+                } else if (lowerCaseInput.includes("loại gỗ")) {
+                    return "WoodMart kinh doanh các loại gỗ: Gỗ Thông, Gỗ Sồi, Gỗ Óc Chó, và Gỗ Lim.";
+                } else if (lowerCaseInput.includes("liên hệ")) {
+                    return `Bạn có thể liên hệ qua:
+- SĐT: 0987.654.321
+- Email: support@woodmart.com`;
+                } else {
+                    return "Cảm ơn câu hỏi của bạn. Nhân viên tư vấn của WoodMart sẽ sớm liên hệ với bạn!";
+                }
+            };
+
+            chatSendBtn.addEventListener('click', handleSendMessage);
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSendMessage();
+                }
+            });
+
+
+            // --- ACTIVE LINK ON SCROLL ---
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('nav.main-nav ul li a');
+
+            window.addEventListener('scroll', ()=> {
+                let current = 'hero';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if(pageYOffset >= sectionTop - 100){
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach( a => {
+                    a.classList.remove('active');
+                    if(a.getAttribute('href') == '#' + current){
+                        a.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
 </html>
