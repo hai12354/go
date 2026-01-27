@@ -1,16 +1,32 @@
-# React + Vite
+# Trang web React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Trang web này được xây dựng bằng React và Vite.
 
-Currently, two official plugins are available:
+## Mô tả
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Đây là một ứng dụng web được tạo bằng React, một thư viện JavaScript phổ biến để xây dựng giao diện người dùng. Vite được sử dụng làm công cụ xây dựng, cung cấp một môi trường phát triển nhanh chóng với tính năng Thay thế mô-đun nóng (HMR).
 
-## React Compiler
+## Các tập lệnh có sẵn
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Trong thư mục dự án, bạn có thể chạy:
 
-## Expanding the ESLint configuration
+### `npm run dev`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Chạy ứng dụng ở chế độ phát triển.\
+Mở [http://localhost:5173](http://localhost:5173) để xem trong trình duyệt.
+
+Trang sẽ tải lại nếu bạn thực hiện chỉnh sửa.\
+Bạn cũng sẽ thấy bất kỳ lỗi lint nào trong bảng điều khiển.
+
+### `npm run build`
+
+Xây dựng ứng dụng để sản xuất vào thư mục `dist`.\
+Nó gói chính xác React ở chế độ sản xuất và tối ưu hóa bản dựng để có hiệu suất tốt nhất.
+
+### `npm run preview`
+
+Chạy một máy chủ xem trước cục bộ của bản dựng sản xuất.
+
+### `npm run lint`
+
+Chạy ESLint để phân tích mã cho các vấn đề tiềm ẩn.
