@@ -5,7 +5,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'; // THÊM NÀY
 import './index.css';
 
-const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;// --- ANIMATION VARIANTS (CẤU HÌNH CHUYỂN ĐỘNG) ---
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const fadeInUp = {
   hidden: { opacity: 0, y: 60, filter: 'blur(10px)' },
   visible: { 
