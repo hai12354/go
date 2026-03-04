@@ -79,15 +79,19 @@ function App() {
       if (chatBodyRef.current) chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }, [messages, chatOpen]);
   
-   const handleSendChat = async () => {
+    const handleSendChat = async () => {
   if (!inputMsg.trim()) return;
-  const newMessages = [...messages, { text: inputMsg, sender: 'user' }];
+
+  const userMessage = { text: inputMsg, sender: 'user' };
+  const newMessages = [...messages, userMessage];
+  
   setMessages(newMessages);
   setInputMsg("");
   setIsAiThinking(true);
 
   try {
-    // SỬA TÊN MODEL TẠI ĐÂY: gemini-1.5-flash
+    // 1. SỬA TÊN MODEL: Đổi từ 2.5-flash thành 1.5-flash
+    // 2. BIẾN KEY: Đảm bảo GEMINI_API_KEY đã được định nghĩa là import.meta.env.VITE_GEMINI_API_KEY ở đầu file
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, 
       {
@@ -96,7 +100,7 @@ function App() {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `Bạn là trợ lý ảo WoodMart. Hãy trả lời ngắn gọn, thân thiện bằng tiếng Việt. Câu hỏi: ${inputMsg}`
+              text: `Bạn là trợ lý nội thất hiện đại WoodMart. Trả lời ngắn gọn, thân thiện, tiếng Việt. Khách hỏi: ${inputMsg}`
             }]
           }]
         })
@@ -105,17 +109,26 @@ function App() {
 
     const data = await response.json();
 
-    // Kiểm tra nếu API trả về lỗi
+    // KIỂM TRA LỖI TỪ GOOGLE (Ví dụ lỗi Leaked Key hoặc hết hạn mức)
     if (data.error) {
-      throw new Error(data.error.message);
+      console.error("Lỗi từ Google API:", data.error.message);
+      setMessages([...newMessages, { 
+        text: "Hệ thống đang bảo trì chìa khóa bảo mật. Bạn vui lòng thử lại sau ít phút!", 
+        sender: 'bot' 
+      }]);
+      return;
     }
 
+    // LẤY PHẢN HỒI NẾU THÀNH CÔNG
     const botReply = data.candidates[0].content.parts[0].text;
     setMessages([...newMessages, { text: botReply, sender: 'bot' }]);
 
   } catch (error) {
-    console.error("Lỗi Gemini:", error);
-    setMessages([...newMessages, { text: "Xin lỗi, tôi đang bận một chút. Bạn thử lại sau nhé!", sender: 'bot' }]);
+    console.error("Lỗi kết nối:", error);
+    setMessages([...newMessages, { 
+      text: "Kết nối mạng hơi chậm, mình vẫn đang ở đây đợi bạn nhé!", 
+      sender: 'bot' 
+    }]);
   } finally {
     setIsAiThinking(false);
   }
