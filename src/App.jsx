@@ -79,24 +79,47 @@ function App() {
       if (chatBodyRef.current) chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }, [messages, chatOpen]);
   
-    const handleSendChat = async () => {
-      if (!inputMsg.trim()) return;
-      const newMessages = [...messages, { text: inputMsg, sender: 'user' }];
-      setMessages(newMessages);
-      setInputMsg("");
-      setIsAiThinking(true);
-      try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: `Bạn là trợ lý nội thất hiện đại. Trả lời ngắn gọn, tiếng Việt, thân thiện. Khách hỏi: ${inputMsg}` }] }] })
-        });
-        const data = await response.json();
-        setMessages([...newMessages, { text: data.candidates[0].content.parts[0].text, sender: 'bot' }]);
-      } catch (error) {
-        setMessages([...newMessages, { text: "Kết nối hơi chậm, bạn chờ chút nhé.", sender: 'bot' }]);
-      } finally { setIsAiThinking(false); }
-    };
+   const handleSendChat = async () => {
+  if (!inputMsg.trim()) return;
+  const newMessages = [...messages, { text: inputMsg, sender: 'user' }];
+  setMessages(newMessages);
+  setInputMsg("");
+  setIsAiThinking(true);
+
+  try {
+    // SỬA TÊN MODEL TẠI ĐÂY: gemini-1.5-flash
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, 
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `Bạn là trợ lý ảo WoodMart. Hãy trả lời ngắn gọn, thân thiện bằng tiếng Việt. Câu hỏi: ${inputMsg}`
+            }]
+          }]
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    // Kiểm tra nếu API trả về lỗi
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+
+    const botReply = data.candidates[0].content.parts[0].text;
+    setMessages([...newMessages, { text: botReply, sender: 'bot' }]);
+
+  } catch (error) {
+    console.error("Lỗi Gemini:", error);
+    setMessages([...newMessages, { text: "Xin lỗi, tôi đang bận một chút. Bạn thử lại sau nhé!", sender: 'bot' }]);
+  } finally {
+    setIsAiThinking(false);
+  }
+};
   
     const handleFormSubmit = async (e) => {
       e.preventDefault();
