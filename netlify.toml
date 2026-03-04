@@ -1,7 +1,8 @@
 [build]
-  # Lệnh để Vite biên dịch code từ JSX sang JS chuẩn
-  command = "npm run build"
-  # Thư mục mà Netlify sẽ dùng để chạy web (Vite xuất ra dist)
+  # Lệnh build: Biên dịch code xong thì copy folder images vào thư mục dist
+  command = "npm run build && cp -r images dist/"
+  
+  # Thư mục mà Netlify sẽ dùng để chạy web
   publish = "dist"
 
 [[redirects]]
