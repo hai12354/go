@@ -1,0 +1,11 @@
+[build]
+  # Lệnh để Vite biên dịch code từ JSX sang JS chuẩn
+  command = "npm run build"
+  # Thư mục mà Netlify sẽ dùng để chạy web (Vite xuất ra dist)
+  publish = "dist"
+
+[[redirects]]
+  # Chống lỗi 404 khi người dùng nhấn F5 (Refresh) trang web
+  from = "/*"
+  to = "/index.html"
+  status = 200
