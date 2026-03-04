@@ -90,17 +90,16 @@ function App() {
   setIsAiThinking(true);
 
   try {
-    // 1. SỬA TÊN MODEL: Đổi từ 2.5-flash thành 1.5-flash
-    // 2. BIẾN KEY: Đảm bảo GEMINI_API_KEY đã được định nghĩa là import.meta.env.VITE_GEMINI_API_KEY ở đầu file
+    // FIX 1: Đổi model thành gemini-1.5-flash (ổn định nhất hiện tại)
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, 
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, 
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: `Bạn là trợ lý nội thất hiện đại WoodMart. Trả lời ngắn gọn, thân thiện, tiếng Việt. Khách hỏi: ${inputMsg}`
+              text: `Bạn là trợ lý nội thất WoodMart. Trả lời ngắn gọn, thân thiện bằng tiếng Việt. Khách hỏi: ${inputMsg}`
             }]
           }]
         })
@@ -109,24 +108,21 @@ function App() {
 
     const data = await response.json();
 
-    // KIỂM TRA LỖI TỪ GOOGLE (Ví dụ lỗi Leaked Key hoặc hết hạn mức)
+    // FIX 2: Kiểm tra lỗi từ API kỹ hơn
     if (data.error) {
-      console.error("Lỗi từ Google API:", data.error.message);
-      setMessages([...newMessages, { 
-        text: "Hệ thống đang bảo trì chìa khóa bảo mật. Bạn vui lòng thử lại sau ít phút!", 
-        sender: 'bot' 
-      }]);
-      return;
+      throw new Error(data.error.message);
     }
 
-    // LẤY PHẢN HỒI NẾU THÀNH CÔNG
-    const botReply = data.candidates[0].content.parts[0].text;
+    // FIX 3: Dùng Optional Chaining (?.) để tránh lỗi trắng trang khi data rỗng
+    const botReply = data?.candidates?.[0]?.content?.parts?.[0]?.text 
+                     || "Xin lỗi, mình gặp chút trục trặc. Bạn hỏi lại nhé!";
+    
     setMessages([...newMessages, { text: botReply, sender: 'bot' }]);
 
   } catch (error) {
     console.error("Lỗi kết nối:", error);
     setMessages([...newMessages, { 
-      text: "Kết nối mạng hơi chậm, mình vẫn đang ở đây đợi bạn nhé!", 
+      text: "Hệ thống đang bận hoặc sai API Key. Bạn kiểm tra lại file .env nhé!", 
       sender: 'bot' 
     }]);
   } finally {
